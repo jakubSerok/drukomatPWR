@@ -9,7 +9,7 @@ function createToken(user) {
   if (!secretKey) {
     throw new Error("Secret key is not defined");
   }
-  return jwt.sign({ id: user.id }, secretKey, { expiresIn: "1h" });
+  return jwt.sign({ _id: user._id }, secretKey, { expiresIn: "1h" });
 }
 
 //login user
@@ -28,7 +28,7 @@ const loginUser = async (req, res) => {
       return res.json({ success: false, message: "Invalid credentials" });
     }
 
-    const token = createToken(user.id);
+    const token = createToken(user._id);
     res.json({ success: true, token });
   } catch (error) {
     console.log(error);
@@ -71,7 +71,7 @@ const registerUser = async (req, res) => {
       phone,
     });
     const user = await newUser.save();
-    const token = createToken(user.id);
+    const token = createToken(user._id);
     res.json({ success: true, token });
   } catch (error) {
     console.log(error);
@@ -95,10 +95,10 @@ const getAllUsers = async (req, res) => {
 // Edit user
 
 const editUser = async (req, res) => {
-  const { id, name, email, phone } = req.body; // Get user details from the request body
+  const { _id, name, email, phone } = req.body; // Get user details from the request body
 
   try {
-    const user = await userModel.findById(id);
+    const user = await userModel.findById(_id);
 
     if (!user) {
       return res
@@ -127,10 +127,10 @@ const editUser = async (req, res) => {
 // Remove user
 
 const removeUser = async (req, res) => {
-  const { id } = req.body; // Get user ID from the request body
+  const { _id } = req.body; // Get user ID from the request body
 
   try {
-    const user = await userModel.findById(id);
+    const user = await userModel.findById(_id);
 
     if (!user) {
       return res
@@ -138,7 +138,7 @@ const removeUser = async (req, res) => {
         .json({ success: false, message: "User  not found" });
     }
 
-    await userModel.findByIdAndDelete(id); // Delete the user
+    await userModel.findByIdAndDelete(_id); // Delete the user
 
     res.json({ success: true, message: "User  deleted successfully" });
   } catch (error) {

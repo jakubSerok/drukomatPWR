@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
+import { IoPrintSharp } from "react-icons/io5";
 import "leaflet/dist/leaflet.css";
 
 const LocationPopup = ({ location, onClose }) => {
@@ -48,10 +49,23 @@ const Map = () => {
     if (searchTerm) {
       try {
         const response = await fetch(
-          `http://localhost:4000/api/drukomat/searchDrukomats?city=${searchTerm}`
+          `http://localhost:4000/api/drukomat/searchDrukomat?city=${searchTerm}`
         );
         const data = await response.json();
-        setFilteredLocations(data); // Update filtered locations based on search
+        console.log(data); // Log the response data
+
+        if (data.length > 0) {
+          setFilteredLocations(data); // Update filtered locations based on search
+          // Center the map on the first location found
+          const map = mapRef.current;
+          if (map) {
+            map.setView([data[0].latitude, data[0].longitude], 16, {
+              animate: true,
+            });
+          }
+        } else {
+          setFilteredLocations([]); // No results found
+        }
       } catch (error) {
         console.error("Error searching drukomaty:", error);
       }
@@ -69,7 +83,7 @@ const Map = () => {
   };
 
   return (
-    <div className="map-container w-full h-[500px] p-4 bg-gray-100 rounded-lg shadow-lg">
+    <div className="map-container w-full h-[500px] p-4 bg-gray-100 rounded-lg shadow-lg mb-[100px]">
       {/* Search bar */}
       <div className="mb-4">
         <input
@@ -121,7 +135,7 @@ const Map = () => {
             position={[loc.latitude, loc.longitude]}
             icon={
               new Icon({
-                iconUrl: "/path/to/custom-marker.png", // Insert your custom icon path
+                iconUrl: <IoPrintSharp />, // Insert your custom icon path
                 iconSize: [32, 32], // Icon size
                 iconAnchor: [16, 32], // Anchor point of the icon
               })

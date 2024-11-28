@@ -33,7 +33,7 @@ const Listuser = () => {
   }, [currentPage]);
 
   // Remove a user
-  const removeUser = async (id) => {
+  const removeUser = async (_id) => {
     try {
       await fetch(`${url}/api/user/delete`, {
         method: "POST",
@@ -41,7 +41,7 @@ const Listuser = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ _id }),
       });
       fetchUsers(); // Refresh user list after removal
     } catch (error) {
@@ -51,7 +51,7 @@ const Listuser = () => {
 
   // Open the edit form and set the current user's details
   const openEditForm = (user) => {
-    setEditingUser(user.id);
+    setEditingUser(user._id);
     setEditForm({
       name: user.name,
       email: user.email,
@@ -74,7 +74,7 @@ const Listuser = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: editingUser, ...editForm }),
+        body: JSON.stringify({ _id: editingUser, ...editForm }),
       });
       const result = await response.json();
       if (result.success) {
@@ -109,7 +109,7 @@ const Listuser = () => {
       <div className="w-full overflow-y-auto">
         <hr />
         {displayedUsers.map((user) => (
-          <React.Fragment key={user.id}>
+          <div key={user._id}>
             <div className="grid grid-cols-6 gap-[10px] w-full items-center">
               <p>{user.name}</p>
               <p>{user.email}</p>
@@ -122,7 +122,7 @@ const Listuser = () => {
               />
               <img
                 src={cross_icon} // Icon for removing
-                onClick={() => removeUser(user.id)}
+                onClick={() => removeUser(user._id)}
                 alt="Remove user"
                 className="m-auto cursor-pointer"
               />
@@ -130,7 +130,7 @@ const Listuser = () => {
             <hr />
 
             {/* Conditional rendering of the edit form */}
-            {editingUser === user.id && (
+            {editingUser === user._id && (
               <form
                 onSubmit={handleSubmitEdit}
                 className="w-full bg-gray-100 p-4 rounded-md mt-2"
@@ -175,14 +175,14 @@ const Listuser = () => {
                 </button>
               </form>
             )}
-          </React.Fragment>
+          </div>
         ))}
       </div>
       <div className="flex justify-center mt-10">
         {[...Array(Math.ceil(allUsers.length / usersPerPage))].map(
           (_, index) => (
             <button
-              key={index}
+              key={`page-${index}`} // Updated: Add a unique key
               className={`px-4 py-2 mx-2 rounded ${
                 currentPage === index + 1
                   ? "bg-blue-500 text-white"

@@ -39,7 +39,7 @@ const ListDrukomaty = () => {
   }, [currentPage]);
 
   // Remove a drukomat
-  const removeDrukomat = async (id) => {
+  const removeDrukomat = async (_id) => {
     try {
       await fetch(`${url}/api/drukomat/delete`, {
         method: "POST",
@@ -47,7 +47,7 @@ const ListDrukomaty = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ _id }),
       });
       fetchDrukomaty(); // Refresh drukomat list after removal
     } catch (error) {
@@ -57,7 +57,7 @@ const ListDrukomaty = () => {
 
   // Open the edit form and set the current drukomat's details
   const openEditForm = (drukomat) => {
-    setEditingDrukomat(drukomat.id);
+    setEditingDrukomat(drukomat._id);
     setEditForm({
       name: drukomat.name,
       address: drukomat.address,
@@ -84,7 +84,7 @@ const ListDrukomaty = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: editingDrukomat, ...editForm }),
+        body: JSON.stringify({ _id: editingDrukomat, ...editForm }),
       });
       const result = await response.json();
       if (result.success) {
@@ -122,7 +122,7 @@ const ListDrukomaty = () => {
       <div className="w-full overflow-y-auto">
         <hr />
         {displayedDrukomaty.map((drukomat) => (
-          <React.Fragment key={drukomat.id}>
+          <React.Fragment key={drukomat._id}>
             <div className="grid grid-cols-8 gap-[10px] w-full items-center">
               <p>{drukomat.name}</p>
               <p>{drukomat.address}</p>
@@ -138,7 +138,7 @@ const ListDrukomaty = () => {
               />
               <img
                 src={cross_icon} // Icon for removing
-                onClick={() => removeDrukomat(drukomat.id)}
+                onClick={() => removeDrukomat(drukomat._id)}
                 alt="Remove drukomat"
                 className="m-auto cursor-pointer"
               />
@@ -146,7 +146,7 @@ const ListDrukomaty = () => {
             <hr />
 
             {/* Conditional rendering of the edit form */}
-            {editingDrukomat === drukomat.id && (
+            {editingDrukomat === drukomat._id && (
               <form
                 onSubmit={handleSubmitEdit}
                 className="w-full bg-gray-100 p-4 rounded-md mt-2"

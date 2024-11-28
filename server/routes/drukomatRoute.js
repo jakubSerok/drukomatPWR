@@ -21,6 +21,6 @@ drukomatRouter.get("/searchDrukomat", searchDrukomats);
 drukomatRouter.post("/edit", updateDrukomat);
 
 // Usuwanie drukomatu
-drukomatRouter.delete("/delete", deleteDrukomat);
+drukomatRouter.post("/delete", deleteDrukomat);
 
 export default drukomatRouter;
