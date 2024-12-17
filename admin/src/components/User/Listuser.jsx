@@ -7,9 +7,15 @@ const Listuser = () => {
   const [displayedUsers, setDisplayedUsers] = useState([]); // For paginated users
   const [editingUser, setEditingUser] = useState(null); // To track the user being edited
   const [editForm, setEditForm] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
+    address: "",
+    city: "",
+    streetAndNumber: "",
+    postalCode: "",
+    country: "",
   });
   const [currentPage, setCurrentPage] = useState(1); // State for current page
   const [usersPerPage, setUsersPerPage] = useState(10); // State for users per page
@@ -53,9 +59,15 @@ const Listuser = () => {
   const openEditForm = (user) => {
     setEditingUser(user._id);
     setEditForm({
-      name: user.name,
+      firstName: user.FirstName,
+      lastName: user.LastName,
       email: user.email,
       phone: user.phone,
+      address: user.address,
+      city: user.City,
+      streetAndNumber: user.streetAndNumber,
+      postalCode: user.PostalCode,
+      country: user.Country,
     });
   };
 
@@ -100,7 +112,8 @@ const Listuser = () => {
     <div className="flex flex-col items-center w-full h-[740px] py-[10px] px-[50px] m-[30px] rounded-md bg-white">
       <h1>All Users List</h1>
       <div className="grid grid-cols-6 gap-[10px] w-full py-[20px] text-[#454545] text-[15px] font-bold">
-        <p>Name</p>
+        <p>First Name</p>
+        <p>Last Name</p>
         <p>Email</p>
         <p>Phone</p>
         <p>Edit</p>
@@ -111,7 +124,8 @@ const Listuser = () => {
         {displayedUsers.map((user) => (
           <div key={user._id}>
             <div className="grid grid-cols-6 gap-[10px] w-full items-center">
-              <p>{user.name}</p>
+              <p>{user.FirstName}</p>
+              <p>{user.LastName}</p>
               <p>{user.email}</p>
               <p>{user.phone}</p>
               <img
@@ -137,11 +151,21 @@ const Listuser = () => {
               >
                 <div className="flex gap-4">
                   <div className="flex flex-col">
-                    <label>Name</label>
+                    <label>First Name</label>
                     <input
                       type="text"
-                      name="name"
-                      value={editForm.name}
+                      name="firstName"
+                      value={editForm.firstName}
+                      onChange={handleChange}
+                      className="p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Last Name</label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={editForm.lastName}
                       onChange={handleChange}
                       className="p-2 border border-gray-300 rounded-md"
                     />
@@ -162,6 +186,56 @@ const Listuser = () => {
                       type="text"
                       name="phone"
                       value={editForm.phone}
+                      onChange={handleChange}
+                      className="p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Address</label>
+                    <input
+                      type="text"
+                      name="address"
+                      value={editForm.address}
+                      onChange={handleChange}
+                      className="p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label>City</label>
+                    <input
+                      type="text"
+                      name="city"
+                      value={editForm.city}
+                      onChange={handleChange}
+                      className="p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Street and Number</label>
+                    <input
+                      type="text"
+                      name="streetAndNumber"
+                      value={editForm.streetAndNumber}
+                      onChange={handleChange}
+                      className="p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Postal Code</label>
+                    <input
+                      type="text"
+                      name="postalCode"
+                      value={editForm.postalCode}
+                      onChange={handleChange}
+                      className="p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Country</label>
+                    <input
+                      type="text"
+                      name="country"
+                      value={editForm.country}
                       onChange={handleChange}
                       className="p-2 border border-gray-300 rounded-md"
                     />

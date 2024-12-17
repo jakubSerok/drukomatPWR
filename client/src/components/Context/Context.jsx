@@ -10,7 +10,7 @@ const ContextProvider = (props) => {
   useEffect(() => {
     async function loadData() {
       if (localStorage.getItem("token")) {
-        setToken(localStorage.getItem("token"));
+        setToken(localStorage.getItem("token", token));
       }
     }
     loadData();

@@ -8,10 +8,16 @@ const Login = ({ setShowLogin }) => {
   const { setToken, url } = useContext(Context);
   const [currState, setCurrState] = useState("Sign Up");
   const [data, setData] = useState({
-    name: "",
+    FirstName: "",
+    LastName: "",
+    address: "",
     email: "",
     phone: "",
     password: "",
+    City: "",
+    streetAndNumber: "",
+    PostalCode: "",
+    Country: "",
   });
 
   const navigate = useNavigate(); // Initialize useNavigate
@@ -48,25 +54,84 @@ const Login = ({ setShowLogin }) => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div
+      className="flex items-center justify-center h-full p-10
+    "
+    >
       <form
         onSubmit={onLogin}
-        className="bg-white rounded-lg p-8 w-full max-w-md shadow-md"
+        className="bg-white rounded-lg p-8 w-full max-w-md shadow-md pt-[150px]"
       >
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">{currState}</h2>
         </div>
         <div className="space-y-4">
           {currState === "Sign Up" && (
-            <input
-              name="name"
-              onChange={onChangeHandler}
-              value={data.name}
-              type="text"
-              placeholder="Your name"
-              className="w-full p-3 border rounded-md focus:ring focus:ring-blue-300"
-              required
-            />
+            <>
+              <input
+                name="FirstName"
+                onChange={onChangeHandler}
+                value={data.FirstName}
+                type="text"
+                placeholder="First Name"
+                className="w-full p-3 border rounded-md focus:ring focus:ring-blue-300"
+                required
+              />
+              <input
+                name="LastName"
+                onChange={onChangeHandler}
+                value={data.LastName}
+                type="text"
+                placeholder="Last Name"
+                className="w-full p-3 border rounded-md focus:ring focus:ring-blue-300"
+                required
+              />
+              <input
+                name="address"
+                onChange={onChangeHandler}
+                value={data.address}
+                type="text"
+                placeholder="Address"
+                className="w-full p-3 border rounded-md focus:ring focus:ring-blue-300"
+                required
+              />
+              <input
+                name="City"
+                onChange={onChangeHandler}
+                value={data.City}
+                type="text"
+                placeholder="City"
+                className="w-full p-3 border rounded-md focus:ring focus:ring-blue-300"
+                required
+              />
+              <input
+                name="streetAndNumber"
+                onChange={onChangeHandler}
+                value={data.streetAndNumber}
+                type="text"
+                placeholder="Street and Number"
+                className="w-full p-3 border rounded-md focus:ring focus:ring-blue-300"
+                required
+              />
+              <input
+                name="PostalCode"
+                onChange={onChangeHandler}
+                value={data.PostalCode}
+                type="text"
+                placeholder="Postal Code"
+                className="w-full p-3 border rounded-md focus:ring focus:ring-blue-300"
+                required
+              />
+              <input
+                name="Country"
+                onChange={onChangeHandler}
+                value={data.Country}
+                type="text"
+                placeholder="Country"
+                className="w-full p-3 border rounded-md focus:ring focus:ring-blue-300"
+                required
+              />
+            </>
           )}
           <input
             name="email"
@@ -82,7 +147,7 @@ const Login = ({ setShowLogin }) => {
               name="phone"
               onChange={onChangeHandler}
               value={data.phone}
-              type="text" // Corrected the type to "text"
+              type="text"
               placeholder="Your phone number"
               className="w-full p-3 border rounded-md focus:ring focus:ring-blue-300"
             />
@@ -115,7 +180,7 @@ const Login = ({ setShowLogin }) => {
               Create a new account?{" "}
               <span
                 onClick={() => setCurrState("Sign Up")}
-                className="text-blue-600 cursor-pointer hover: underline"
+                className="text-blue-600 cursor-pointer hover:underline"
               >
                 Click here
               </span>
