@@ -15,6 +15,14 @@ const SideBar = () => {
               Profile
             </Link>
           </li>
+          <li className="mb-4">
+            <Link
+              to="/userpanel/order"
+              className="hover:text-gray-400 transition"
+            >
+              Order
+            </Link>
+          </li>
           {/* Add more sections here */}
         </ul>
       </nav>

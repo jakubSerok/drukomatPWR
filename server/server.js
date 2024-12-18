@@ -3,6 +3,7 @@ import cors from "cors";
 import { connectDB } from "./config/db.js";
 import userRouter from "./routes/userRoute.js";
 import drukomatRouter from "./routes/drukomatRoute.js";
+import orderRouter from "./routes/orderRoute.js";
 import "dotenv/config";
 import dotenv from "dotenv";
 
@@ -21,6 +22,7 @@ connectDB();
 // api endpoints
 app.use("/api/user", userRouter);
 app.use("/api/drukomat", drukomatRouter);
+app.use("/api/orders", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working");

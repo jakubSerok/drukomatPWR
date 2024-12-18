@@ -63,12 +63,10 @@ const updateOrder = async (req, res) => {
     });
   } catch (error) {
     console.error("Błąd podczas aktualizacji zamówienia:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Błąd podczas aktualizacji zamówienia",
-      });
+    res.status(500).json({
+      success: false,
+      message: "Błąd podczas aktualizacji zamówienia",
+    });
   }
 };
 
