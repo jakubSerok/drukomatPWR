@@ -13,6 +13,14 @@ const drukomatSchema = new mongoose.Schema({
     default: "active",
   },
   description: { type: String },
+  Drafts: {
+    type: Object,
+    required: false,
+  },
+  PrintingModule: {
+    type: Object,
+    required: false,
+  },
 });
 
 // Tworzymy model na podstawie schematu

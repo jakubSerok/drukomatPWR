@@ -12,11 +12,11 @@ const orderSchema = new mongoose.Schema({
   },
   CompletionDate: {
     type: Date,
-    required: false,
+    default: Date.now,
   },
   DrukomantID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Drukomant", // Reference to Drukomant model if needed
+    ref: "drukomants", // Reference to Drukomant model if needed
     required: true,
   },
   CollectionCode: {
@@ -25,12 +25,12 @@ const orderSchema = new mongoose.Schema({
   },
   UserId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Reference to the User model
+    ref: "users", // Reference to the User model
     required: true,
   },
   File: {
     type: Object, // You can use Buffer or a reference to a file service if required
-    required: false,
+    default: "",
   },
 });
 
