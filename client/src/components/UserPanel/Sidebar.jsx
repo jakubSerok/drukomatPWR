@@ -20,7 +20,15 @@ const SideBar = () => {
               to="/userpanel/order"
               className="hover:text-gray-400 transition"
             >
-              Order
+              Creat Order
+            </Link>
+          </li>
+          <li className="mb-4">
+            <Link
+              to="/userpanel/myOrders"
+              className="hover:text-gray-400 transition"
+            >
+              Order Hisotry
             </Link>
           </li>
           {/* Add more sections here */}

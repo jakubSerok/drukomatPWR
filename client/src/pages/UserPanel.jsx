@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import SideBar from "../components/UserPanel/Sidebar";
 import Profile from "../components/UserPanel/Profile";
 import CreateOrder from "../components/UserPanel/CreateOrder";
+import OrderHistory from "../components/UserPanel/OrderHistory";
 
 const UserPanel = () => {
   return (
@@ -12,6 +13,7 @@ const UserPanel = () => {
         <Routes>
           <Route path="profile" element={<Profile />} />
           <Route path="order" element={<CreateOrder />} />
+          <Route path="myOrders" element={<OrderHistory />} />
         </Routes>
       </div>
     </div>

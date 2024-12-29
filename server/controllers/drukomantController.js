@@ -112,10 +112,34 @@ const searchDrukomats = async (req, res) => {
   }
 };
 
+// Searching drukomat by ID and returning its details
+const getDrukomatById = async (req, res) => {
+  const { id } = req.params; // Get drukomat ID from the request parameters
+
+  try {
+    const drukomat = await drukomatModel.findById(id); // Find the drukomat by ID
+
+    if (!drukomat) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Drukomat nie znaleziony" }); // Return 404 if not found
+    }
+
+    res.status(200).json(drukomat); // Return the found drukomat
+  } catch (error) {
+    console.error("Błąd podczas wyszukiwania drukomatu:", error); // Log error
+
+    res
+      .status(500)
+      .json({ success: false, message: "Błąd podczas wyszukiwania drukomatu" }); // Handle errors
+  }
+};
+
 export {
   getDrukomaty,
   createDrukomat,
   updateDrukomat,
   deleteDrukomat,
+  getDrukomatById,
   searchDrukomats,
 };

@@ -5,6 +5,7 @@ import {
   updateDrukomat,
   deleteDrukomat,
   searchDrukomats,
+  getDrukomatById,
 } from "../controllers/drukomantController.js";
 const drukomatRouter = express.Router();
 
@@ -22,5 +23,8 @@ drukomatRouter.post("/edit", updateDrukomat);
 
 // Usuwanie drukomatu
 drukomatRouter.post("/delete", deleteDrukomat);
+
+// New route to get drukomat by ID
+drukomatRouter.get("/drukomaty/:id", getDrukomatById);
 
 export default drukomatRouter;

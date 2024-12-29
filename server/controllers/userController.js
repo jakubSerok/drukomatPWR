@@ -96,7 +96,7 @@ const registerUser = async (req, res) => {
   }
 };
 export const getUserProfile = async (req, res) => {
-  console.log("User  ID from request:", req.user); // Debugging line
+  console.log("User  ID from request Profile featcg:", req.user); // Debugging line
   try {
     const user = await userModel.findById(req.user.id); // Using req.user.id
     if (!user) {

@@ -25,9 +25,15 @@ const CreateOrder = () => {
   const [data, setData] = useState({
     DrukomantID: "",
     UserId: "",
-    File: null,
     CollectionCode: "",
     Status: 0,
+    File: {
+      DraftID: 0,
+      UserFile: null,
+      Quantity: 1,
+      Color: false,
+      Format: "A4",
+    },
   });
 
   const apiUrl = "http://localhost:4000";
@@ -111,9 +117,44 @@ const CreateOrder = () => {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
 
-    setFile(selectedFile);
+    // Update the UserFile inside the File object
+    setData((prevData) => ({
+      ...prevData,
+      File: { ...prevData.File, UserFile: "selectedFile" },
+    }));
+  };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
 
-    setData((prevData) => ({ ...prevData, File: selectedFile })); // Update File in data
+    // Handle changes to both top-level and nested File fields
+    if (name in data.File) {
+      setData((prevData) => ({
+        ...prevData,
+        File: { ...prevData.File, [name]: value },
+      }));
+    } else {
+      setData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+
+    // Handle changes to checkboxes within the File object
+    if (name in data.File) {
+      setData((prevData) => ({
+        ...prevData,
+        File: { ...prevData.File, [name]: checked },
+      }));
+    } else {
+      setData((prevData) => ({
+        ...prevData,
+        [name]: checked,
+      }));
+    }
   };
 
   // Handle order submission
@@ -125,7 +166,7 @@ const CreateOrder = () => {
       return;
     }
 
-    if (!file) {
+    if (!data.File.UserFile) {
       setMessage("Please upload a file.");
       return;
     }
@@ -135,24 +176,21 @@ const CreateOrder = () => {
       return;
     }
 
-    // Generate random collection code
     const generateRandomCode = () =>
       Math.random().toString(36).substring(2, 8).toUpperCase();
 
-    setData((prevData) => ({
-      ...prevData,
-
-      DrukomantID: selectedDrukomat._id,
-
-      CollectionCode: generateRandomCode(),
-
-      Status: 0,
-    }));
-
     try {
+      const orderData = {
+        ...data,
+        DrukomantID: selectedDrukomat._id,
+        CollectionCode: generateRandomCode(),
+      };
+
+      console.log(orderData);
+
       const response = await axios.post(
         `${apiUrl}/api/orders/createOrder`,
-        data
+        orderData
       );
 
       if (response) {
@@ -244,10 +282,6 @@ const CreateOrder = () => {
       {/* File Upload Section */}
       {selectedDrukomat && (
         <form onSubmit={handleSubmit} className="space-y-4">
-          <p className="text-sm text-gray-600">
-            Selected Drukomat: <strong>{selectedDrukomat.name}</strong>
-          </p>
-
           <div>
             <label
               htmlFor="file"
@@ -261,6 +295,65 @@ const CreateOrder = () => {
               onChange={handleFileChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded"
             />
+          </div>
+
+          {/* Quantity */}
+          <div>
+            <label
+              htmlFor="quantity"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Quantity
+            </label>
+            <input
+              id="quantity"
+              type="number"
+              name="Quantity"
+              value={data.File.Quantity}
+              onChange={handleInputChange}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+              min="1"
+            />
+          </div>
+
+          {/* Color */}
+          <div>
+            <label
+              htmlFor="color"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Color Printing
+            </label>
+            <input
+              id="color"
+              type="checkbox"
+              name="Color"
+              checked={data.File.Color}
+              onChange={handleCheckboxChange}
+              className="mt-1"
+            />
+          </div>
+
+          {/* Format */}
+          <div>
+            <label
+              htmlFor="format"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Format
+            </label>
+            <select
+              id="format"
+              name="Format"
+              value={data.File.Format}
+              onChange={handleInputChange}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            >
+              <option value="A4">A4</option>
+              <option value="A3">A3</option>
+              <option value="Letter">Letter</option>
+              <option value="Legal">Legal</option>
+            </select>
           </div>
 
           <button
