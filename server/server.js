@@ -4,6 +4,9 @@ import { connectDB } from "./config/db.js";
 import userRouter from "./routes/userRoute.js";
 import drukomatRouter from "./routes/drukomatRoute.js";
 import orderRouter from "./routes/orderRoute.js";
+import draftRoute from "./routes/draftRoute.js";
+import wareHouseRoute from "./routes/wareHouseRoute.js";
+import printingModuleRoute from "./routes/printingModuleRoute.js";
 import "dotenv/config";
 import dotenv from "dotenv";
 
@@ -23,6 +26,9 @@ connectDB();
 app.use("/api/user", userRouter);
 app.use("/api/drukomat", drukomatRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/drafts", draftRoute);
+app.use("/api/printing-modules", printingModuleRoute);
+app.use("/api/warehouses", wareHouseRoute);
 
 app.get("/", (req, res) => {
   res.send("API Working");

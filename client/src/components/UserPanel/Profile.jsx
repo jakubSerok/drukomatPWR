@@ -131,7 +131,7 @@ const Profile = () => {
         {/* Form */}
         <form
           onSubmit={handleSubmit}
-          className="w-full bg-gray-100 p-4 rounded-md mt-2"
+          className="w-full bg-gray-100 p-4 rounded-md mt-2 h-full"
         >
           <div className="flex gap-4 flex-wrap">
             <div className="flex flex-col w-full md:w-1/2">

@@ -17,10 +17,13 @@ const CreateOrder = () => {
   const [userId, setUserId] = useState("");
   const [drukomats, setDrukomats] = useState([]);
   const [selectedDrukomat, setSelectedDrukomat] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("userFile");
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredDrukomats, setFilteredDrukomats] = useState([]);
+  const [drafts, setDrafts] = useState([]); // State for drafts
+  const [selectedDraft, setSelectedDraft] = useState(null); // State for selected draft
   const mapRef = useRef();
   const [data, setData] = useState({
     DrukomantID: "",
@@ -84,6 +87,22 @@ const CreateOrder = () => {
     fetchDrukomats();
   }, []);
 
+  // Fetch drafts from the server
+  useEffect(() => {
+    const fetchDrafts = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/api/drafts/getDrafts`);
+        const data = await response.json();
+        setDrafts(data);
+      } catch (error) {
+        console.error("Error fetching drukomats:", error);
+        setMessage("Failed to load drukomats. Please try again later.");
+      }
+    };
+
+    fetchDrafts();
+  }, []);
+
   // Search functionality
   const handleSearch = useCallback(() => {
     if (searchTerm) {
@@ -117,11 +136,13 @@ const CreateOrder = () => {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
 
-    // Update the UserFile inside the File object
-    setData((prevData) => ({
-      ...prevData,
-      File: { ...prevData.File, UserFile: "selectedFile" },
-    }));
+    if (selectedFile) {
+      console.log("Selected file:", selectedFile); // Log the selected file
+      setData((prevData) => ({
+        ...prevData,
+        File: { ...prevData.File, UserFile: "selectedFile" },
+      }));
+    }
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -278,9 +299,129 @@ const CreateOrder = () => {
           ))}
         </MapContainer>
       </div>
-
-      {/* File Upload Section */}
       {selectedDrukomat && (
+        <div class Name="mb-4">
+          <label
+            htmlFor="fileType"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Select File Type
+          </label>
+          <select
+            id="fileType"
+            value={selectedOption}
+            onChange={(e) => setSelectedOption(e.target.value)}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded"
+          >
+            <option value="userFile">User File</option>
+            <option value="draftFile">Draft File</option>
+          </select>
+        </div>
+      )}
+      {selectedDrukomat && selectedOption === "draftFile" && (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="draftSelect"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Select Draft
+            </label>
+            <select
+              id="draftSelect"
+              onChange={(e) => {
+                const selectedDraft = drafts.find(
+                  (draft) => draft._id === e.target.value
+                );
+                setSelectedDraft(selectedDraft);
+                setData((prevData) => ({
+                  ...prevData,
+                  File: {
+                    ...prevData.File,
+                    UserFile: "draftFile", //selectedDraft ? selectedDraft.DraftFile : null,
+                  },
+                }));
+              }}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            >
+              <option value="">Select a draft</option>
+              {drafts.map((draft) => (
+                <option key={draft._id} value={draft._id}>
+                  {draft.Name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Quantity */}
+          <div>
+            <label
+              htmlFor="quantity"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Quantity
+            </label>
+            <input
+              id="quantity"
+              type="number"
+              name="Quantity"
+              value={data.File.Quantity}
+              onChange={handleInputChange}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+              min="1"
+            />
+          </div>
+
+          {/* Color */}
+          <div>
+            <label
+              htmlFor="color"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Color Printing
+            </label>
+            <input
+              id="color"
+              type="checkbox"
+              name="Color"
+              checked={data.File.Color}
+              onChange={handleCheckboxChange}
+              className="mt-1"
+            />
+          </div>
+
+          {/* Format */}
+          <div>
+            <label
+              htmlFor="format"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Format
+            </label>
+            <select
+              id="format"
+              name="Format"
+              value={data.File.Format}
+              onChange={handleInputChange}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            >
+              <option value="A4">A4</option>
+              <option value="A3">A3</option>
+              <option value="Letter">Letter</option>
+              <option value="Legal">Legal</option>
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full p-2 rounded text-white bg-blue-500 hover:bg-blue-600"
+          >
+            Create Order
+          </button>
+        </form>
+      )}
+      {/* File Upload Section */}
+      {selectedDrukomat && selectedOption === "userFile" && (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label

@@ -7,7 +7,7 @@ import OrderHistory from "../components/UserPanel/OrderHistory";
 
 const UserPanel = () => {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-full">
       <SideBar />
       <div className="flex-1 bg-gray-100 p-6">
         <Routes>

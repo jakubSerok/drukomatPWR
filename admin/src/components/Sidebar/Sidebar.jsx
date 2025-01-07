@@ -43,6 +43,18 @@ const Sidebar = () => {
           <p>Order</p>
         </div>
       </Link>
+      <Link to="/creatDrafts" style={{ textDecoration: "none" }}>
+        <div className="flex items-center justify-center mx-[20px] px-[10px] py-[5px] rounded-md bg-[#f6f6f6] gap-[20px] cursor-pointer">
+          <FaUserPlus size={20} />
+          <p>create Draft</p>
+        </div>
+      </Link>
+      <Link to="/listDrafts" style={{ textDecoration: "none" }}>
+        <div className="flex items-center justify-center mx-[20px] px-[10px] py-[5px] rounded-md bg-[#f6f6f6] gap-[20px] cursor-pointer">
+          <FaUserPlus size={20} />
+          <p>List Draft</p>
+        </div>
+      </Link>
     </div>
   );
 };
