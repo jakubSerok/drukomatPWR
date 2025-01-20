@@ -35,6 +35,14 @@ export const updateWarehouse = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+export const getAllWarehouses = async (req, res) => {
+  try {
+    const warehouses = await WarehouseModel.find(); // Fetch all warehouses
+    res.status(200).json(warehouses);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 export const deleteWarehouse = async (req, res) => {
   try {

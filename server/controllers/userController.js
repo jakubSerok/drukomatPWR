@@ -168,20 +168,20 @@ const editUser = async (req, res) => {
 
 // Remove user
 const removeUser = async (req, res) => {
-  const { _id } = req.body; // Get user ID from the request body
+  const { id } = req.params; // Get user ID from the URL parameters
 
   try {
-    const user = await userModel.findById(_id);
+    const user = await userModel.findById(id); // Find the user by ID
 
     if (!user) {
       return res
         .status(404)
-        .json({ success: false, message: "User   not found" });
+        .json({ success: false, message: "User  not found" });
     }
 
-    await userModel.findByIdAndDelete(_id); // Delete the user
+    await userModel.findByIdAndDelete(id); // Delete the user
 
-    res.json({ success: true, message: "User   deleted successfully" });
+    res.json({ success: true, message: "User  deleted successfully" });
   } catch (error) {
     console.error("Error deleting user:", error);
     res.status(500).json({ success: false, message: "Error deleting user" });

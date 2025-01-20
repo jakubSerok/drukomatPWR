@@ -7,8 +7,8 @@ const Listuser = () => {
   const [displayedUsers, setDisplayedUsers] = useState([]); // For paginated users
   const [editingUser, setEditingUser] = useState(null); // To track the user being edited
   const [editForm, setEditForm] = useState({
-    firstName: "",
-    lastName: "",
+    FirstName: "",
+    LastName: "",
     email: "",
     phone: "",
     address: "",
@@ -19,6 +19,7 @@ const Listuser = () => {
   });
   const [currentPage, setCurrentPage] = useState(1); // State for current page
   const [usersPerPage, setUsersPerPage] = useState(10); // State for users per page
+  const [message, setMessage] = useState(""); // State for messages
 
   // Fetch user data
   const fetchUsers = async () => {
@@ -30,6 +31,7 @@ const Listuser = () => {
       setDisplayedUsers(getPaginatedUsers(data, currentPage, usersPerPage));
     } catch (error) {
       console.error("Failed to fetch users:", error);
+      setMessage("Failed to fetch users.");
     }
   };
 
@@ -41,17 +43,27 @@ const Listuser = () => {
   // Remove a user
   const removeUser = async (_id) => {
     try {
-      await fetch(`${url}/api/user/delete`, {
-        method: "POST",
+      const response = await fetch(`${url}/api/user/delete/${_id}`, {
+        method: "DELETE",
+
         headers: {
           Accept: "application/json",
+
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ _id }),
       });
-      fetchUsers(); // Refresh user list after removal
+
+      const data = await response.json();
+
+      if (data.success) {
+        console.log("User  deleted successfully.");
+
+        // Optionally refresh the user list or update the UI
+      } else {
+        console.error(data.message);
+      }
     } catch (error) {
-      console.error("Failed to remove user:", error);
+      console.error("Failed to delete user:", error);
     }
   };
 
@@ -59,8 +71,8 @@ const Listuser = () => {
   const openEditForm = (user) => {
     setEditingUser(user._id);
     setEditForm({
-      firstName: user.FirstName,
-      lastName: user.LastName,
+      FirstName: user.FirstName,
+      LastName: user.LastName,
       email: user.email,
       phone: user.phone,
       address: user.address,
@@ -90,11 +102,15 @@ const Listuser = () => {
       });
       const result = await response.json();
       if (result.success) {
+        setMessage("User  edited successfully."); // Set success message
         fetchUsers(); // Refresh users after edit
         setEditingUser(null); // Close the edit form
+      } else {
+        setMessage("Failed to edit user."); // Set error message
       }
     } catch (error) {
       console.error("Failed to edit user:", error);
+      setMessage("Failed to edit user.");
     }
   };
 
@@ -111,6 +127,8 @@ const Listuser = () => {
   return (
     <div className="flex flex-col items-center w-full h-[740px] py-[10px] px-[50px] m-[30px] rounded-md bg-white">
       <h1>All Users List</h1>
+      {message && <div className="text-red-500">{message}</div>}{" "}
+      {/* Display message */}
       <div className="grid grid-cols-6 gap-[10px] w-full py-[20px] text-[#454545] text-[15px] font-bold">
         <p>First Name</p>
         <p>Last Name</p>
@@ -154,8 +172,8 @@ const Listuser = () => {
                     <label>First Name</label>
                     <input
                       type="text"
-                      name="firstName"
-                      value={editForm.firstName}
+                      name="FirstName"
+                      value={editForm.FirstName}
                       onChange={handleChange}
                       className="p-2 border border-gray-300 rounded-md"
                     />
@@ -164,8 +182,8 @@ const Listuser = () => {
                     <label>Last Name</label>
                     <input
                       type="text"
-                      name="lastName"
-                      value={editForm.lastName}
+                      name="LastName"
+                      value={editForm.LastName}
                       onChange={handleChange}
                       className="p-2 border border-gray-300 rounded-md"
                     />

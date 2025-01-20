@@ -7,6 +7,7 @@ import ListDrukomaty from "./components/Drukomat/ListDrukomaty";
 import CreateDrukomat from "./components/Drukomat/CreatDrukomat";
 import CreateDraft from "./components/Drafts/CreateDraft";
 import ListDrafts from "./components/Drafts/ListDrafts";
+import AllOrders from "./components/Order/AllOrders";
 const App = () => {
   return (
     <div className="flex">
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/creatDrukomat" element={<CreateDrukomat />} />
           <Route path="/creatDrafts" element={<CreateDraft />} />
           <Route path="/listDrafts" element={<ListDrafts />} />
+          <Route path="/order" element={<AllOrders />} />
         </Routes>
       </div>
     </div>

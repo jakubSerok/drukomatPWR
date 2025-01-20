@@ -17,8 +17,9 @@ const drukomatSchema = new mongoose.Schema({
     type: Object,
     required: false,
   },
-  PrintingModule: {
-    type: Object,
+  warehouseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "warehouses", // Reference to the Warehouse model
     required: false,
   },
 });
@@ -26,4 +27,5 @@ const drukomatSchema = new mongoose.Schema({
 // Tworzymy model na podstawie schematu
 const drukomatModel =
   mongoose.models.drukomat || mongoose.model("drukomat", drukomatSchema);
+
 export default drukomatModel;

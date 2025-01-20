@@ -44,6 +44,14 @@ const Login = ({ setShowLogin }) => {
         setToken(response.data.token);
         localStorage.setItem("token", response.data.token);
         setShowLogin(false);
+
+        // Show success message based on the current state
+        if (currState === "Login") {
+          toast.success("Logged in successfully!");
+        } else {
+          toast.success("Account created successfully!");
+        }
+
         navigate("/userpanel"); // Navigate to UserPanel on success
       } else {
         toast.error(response.data.message);

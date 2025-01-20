@@ -65,6 +65,31 @@ const createOrder = async (req, res) => {
       .json({ message: "Błąd podczas dodawania zamówienia", error: err });
   }
 };
+// Update order status based on collection code
+const updateStatus = async (req, res) => {
+  const { collectionCode } = req.params; // Get collection code from URL parameters
+
+  try {
+    // Find the order by collection code
+    const order = await Order.findOne({ CollectionCode: collectionCode });
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Update the order status
+    order.Status = 4; // Set status to 4 (cache opened)
+    await order.save();
+
+    res
+      .status(200)
+      .json({ message: "Order status updated successfully", order });
+  } catch (error) {
+    console.error("Error updating order:", error);
+    res
+      .status(500)
+      .json({ message: "Error updating order", error: error.message });
+  }
+};
 
 // Aktualizowanie zamówienia (Update an order)
 const updateOrder = async (req, res) => {
@@ -168,6 +193,29 @@ const searchOrders = async (req, res) => {
       .json({ message: "Błąd podczas wyszukiwania zamówień", error: err });
   }
 };
+// Pobieranie zamówień po ID Drukomatu (Get orders by Drukomat ID)
+const getOrdersByDrukomatId = async (req, res) => {
+  const { drukomatId } = req.params; // Get the Drukomat ID from the route parameters
+
+  try {
+    // Find all orders for the given Drukomat ID
+    const orders = await Order.find({ DrukomantID: drukomatId });
+
+    if (!orders || orders.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Nie znaleziono zamówień dla podanego drukomatu" }); // No orders found
+    }
+
+    res.status(200).json(orders); // Return the orders
+  } catch (error) {
+    console.error("Błąd podczas pobierania zamówień po ID Drukomatu:", error);
+    res.status(500).json({
+      message: "Błąd podczas pobierania zamówień",
+      error: error.message,
+    });
+  }
+};
 
 export {
   getAllOrders,
@@ -176,4 +224,6 @@ export {
   deleteOrder,
   searchOrders,
   getUserOrders,
+  getOrdersByDrukomatId,
+  updateStatus,
 };

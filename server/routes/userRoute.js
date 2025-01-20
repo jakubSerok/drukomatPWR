@@ -15,7 +15,7 @@ const userRouter = express.Router();
 userRouter.post("/register", registerUser); // User Registration
 userRouter.post("/login", loginUser); // User Login
 userRouter.post("/edit", editUser); // Edit user profile (protected)
-userRouter.delete("/delete", removeUser); // Delete user
+userRouter.delete("/delete/:id", removeUser); // Delete user
 userRouter.get("/allUsers", getAllUsers); // Get all users
 userRouter.get("/user", authMiddleware, getUserProfile); // Fetch current user profile
 

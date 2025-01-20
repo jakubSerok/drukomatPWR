@@ -73,6 +73,29 @@ const updateDrukomat = async (req, res) => {
       .json({ success: false, message: "Błąd podczas aktualizacji drukomatu" });
   }
 };
+import DrukomatModel from "../models/drukomatModel.js";
+
+export const updateDrukomatWarehouse = async (req, res) => {
+  try {
+    const { id } = req.params; // Get the drukomat ID from the URL
+    const { warehouseId } = req.body; // Get the warehouseId from the request body
+
+    // Find and update the specific drukomat
+    const updatedDrukomat = await DrukomatModel.findByIdAndUpdate(
+      id,
+      { warehouseId },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedDrukomat) {
+      return res.status(404).json({ message: "Drukomat not found" });
+    }
+
+    res.status(200).json(updatedDrukomat);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 // Usuwanie drukomatu
 const deleteDrukomat = async (req, res) => {

@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 const PrintingModuleSchema = new mongoose.Schema({
   Printers: {
     type: Map,
-    of: [String], // Map of warehouse IDs to arrays of printer IDs
+    of: [{ type: mongoose.Schema.Types.ObjectId, ref: "Printer" }],
     required: true,
   },
   Caches: {
     type: Map,
-    of: [String], // Map of warehouse IDs to arrays of cache IDs
+    of: [{ type: mongoose.Schema.Types.ObjectId, ref: "Cache" }],
     required: true,
   },
 });

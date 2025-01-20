@@ -6,6 +6,9 @@ import Login from "./components/Login/Login";
 import Main from "./pages/Main";
 import UserPanel from "./pages/UserPanel";
 import ContextProvider from "./components/Context/Context";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -21,6 +24,7 @@ function App() {
         </Routes>
         <Footer />
       </Router>
+      <ToastContainer />
     </ContextProvider>
   );
 }
