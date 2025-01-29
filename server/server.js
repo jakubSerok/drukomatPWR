@@ -7,6 +7,8 @@ import orderRouter from "./routes/orderRoute.js";
 import draftRoute from "./routes/draftRoute.js";
 import wareHouseRoute from "./routes/wareHouseRoute.js";
 import printingModuleRoute from "./routes/printingModuleRoute.js";
+import order2Router from "./routes/Order.js"; // Import the new order2 route
+import drukomat2Router from "./routes/Drukomat.js"; // Import the new drukomat2 route
 import "dotenv/config";
 import dotenv from "dotenv";
 
@@ -29,6 +31,8 @@ app.use("/api/orders", orderRouter);
 app.use("/api/drafts", draftRoute);
 app.use("/api/printing-modules", printingModuleRoute);
 app.use("/api/warehouses", wareHouseRoute);
+app.use("/api/orders2", order2Router); // Use the new order2 route
+app.use("/api/drukomat2", drukomat2Router); // Use the new drukomat2 route
 
 app.get("/", (req, res) => {
   res.send("API Working");

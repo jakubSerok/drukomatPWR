@@ -13,7 +13,7 @@ const Symulacja = () => {
     const fetchDrukomaty = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/drukomat/getDrukomaty"
+          "http://localhost:4000/api/drukomat2/getDrukomaty"
         );
         setDrukomaty(response.data);
       } catch (error) {
@@ -28,7 +28,7 @@ const Symulacja = () => {
   const fetchOrders = async (drukomatId) => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/orders/getOrdersByDrukomatId/${drukomatId}`
+        `http://localhost:4000/api/orders2/getOrdersByDrukomatId/${drukomatId}`
       );
       console.log("Fetched orders:", response.data);
       setOrders(response.data);
@@ -72,7 +72,7 @@ const Symulacja = () => {
         };
 
         await axios.post(
-          `http://localhost:4000/api/orders/updateOrder/${matchingOrder._id}`, // Use the correct endpoint
+          `http://localhost:4000/api/orders2/updateOrder/${matchingOrder._id}`, // Use the correct endpoint
           updatedOrder
         );
 
